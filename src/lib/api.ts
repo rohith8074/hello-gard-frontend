@@ -1,8 +1,17 @@
 import axios from 'axios';
 import { getToken } from './auth';
 
+const getBaseURL = () => {
+    if (process.env.NEXT_PUBLIC_API_URL) return process.env.NEXT_PUBLIC_API_URL;
+    if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+        const base = process.env.NEXT_PUBLIC_API_BASE_URL.replace(/\/$/, '');
+        return `${base}/api/v1`;
+    }
+    return 'http://localhost:8000/api/v1';
+};
+
 const api = axios.create({
-    baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1',
+    baseURL: getBaseURL(),
 });
 
 // Attach JWT on every request
@@ -270,7 +279,7 @@ export const getCalendarEvents = async (year: number, month: number, product?: s
 };
 
 export const getCalendarStreamUrl = (year: number, month: number, product?: string) => {
-    const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
+    const base = getBaseURL();
     const params = new URLSearchParams({ year: String(year), month: String(month) });
     if (product && product !== 'all') params.set('product', product);
     return `${base}/dashboard/calendar/stream?${params}`;
