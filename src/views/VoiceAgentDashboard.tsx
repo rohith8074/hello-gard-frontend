@@ -464,7 +464,7 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
       {/* Chart + Recent Calls */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Call Volume Trends */}
-        <div className="lg:col-span-2 classic-card p-5">
+        <div className="lg:col-span-2 classic-card p-5 flex flex-col" style={{ height: '320px' }}>
           <div className="flex items-center justify-between mb-4">
             <div>
               <h3 className="text-sm font-semibold text-base-900">Call Volume Trends</h3>
@@ -480,7 +480,7 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
           {chartData.volume.length === 0 ? (
             <div className="h-[200px] flex items-center justify-center text-sm text-base-300 italic">No data available</div>
           ) : (
-            <div className="h-[200px]">
+            <div className="flex-1 min-h-0">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={chartData.volume} margin={{ top: 4, right: 0, left: -20, bottom: 0 }}>
                   <defs>
@@ -556,12 +556,17 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
                       : 'border-transparent'
                   }`}
                 >
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="font-mono text-[11px] font-bold text-primary-600 bg-primary-50 px-2 py-0.5 rounded border border-primary-100">
-                      {formatCallId(rawId, call.user_id || call.caller_id, changeTab)}
-                    </span>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-[10px] font-bold text-primary-600 bg-primary-50 px-2 py-0.5 rounded border border-primary-100 uppercase">
+                        {formatCallId(rawId, call.user_id || call.caller_id, changeTab)}
+                      </span>
+                      <span className="text-[10px] font-bold text-base-400">
+                        {call.processed_at ? new Date(call.processed_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}
+                      </span>
+                    </div>
                     {csat != null && csat > 0 && (
-                      <span className="text-xs text-amber-600 font-semibold flex items-center gap-1">
+                      <span className="text-[11px] text-amber-600 font-bold flex items-center gap-1">
                         <Smile className="w-3 h-3" />{csat}
                       </span>
                     )}
