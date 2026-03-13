@@ -760,7 +760,9 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
                 <p className="text-xs text-base-600 line-clamp-2">{ticket.summary}</p>
                 <div className="flex items-center justify-between mt-2">
                   <span className="text-xs text-base-400">{PRODUCT_LABELS[ticket.product] || ticket.product}</span>
-                  <span className="text-xs text-base-400">{new Date(ticket.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                  <span className="text-xs text-base-400">
+                    {ticket.created_at ? new Date(ticket.created_at).toLocaleString([], { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' }) : '—'}
+                  </span>
                 </div>
               </div>
             ))}
