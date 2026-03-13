@@ -221,11 +221,10 @@ export const getRagMetrics = async (product?: string, startDate?: string, endDat
 };
 
 // Customer Profiles
-export const getCustomerProfiles = async (product?: string, limit: number = 50, search?: string, startDate?: string, endDate?: string, segment?: string) => {
+export const getCustomerProfiles = async (product?: string, limit: number = 50, search?: string, startDate?: string, endDate?: string) => {
     try {
         const params = new URLSearchParams({ limit: String(limit) });
         if (product && product !== 'all') params.set('product', product);
-        if (segment && segment !== 'all') params.set('segment', segment);
         if (search) params.set('search', search);
         if (startDate) params.set('start_date', startDate);
         if (endDate) params.set('end_date', endDate);

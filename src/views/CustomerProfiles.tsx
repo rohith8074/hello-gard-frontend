@@ -62,7 +62,6 @@ export default function CustomerProfiles({ productFilter = 'all', changeTab, ini
   const [profiles, setProfiles] = useState<ProfileSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
-  const [segment, setSegment] = useState('all');
   
   // Detailed View State
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -76,14 +75,14 @@ export default function CustomerProfiles({ productFilter = 'all', changeTab, ini
   const fetchProfiles = useCallback(async () => {
     setLoading(true);
     try {
-      const res = await getCustomerProfiles(productFilter, 100, search, undefined, undefined, segment);
+      const res = await getCustomerProfiles(productFilter, 100, search);
       setProfiles(res.profiles || []);
     } catch (e) {
       console.error('Failed to fetch customer data', e);
     } finally {
       setLoading(false);
     }
-  }, [productFilter, search, segment]);
+  }, [productFilter, search]);
 
   useEffect(() => { 
     const debounce = setTimeout(fetchProfiles, 300);
@@ -148,21 +147,6 @@ export default function CustomerProfiles({ productFilter = 'all', changeTab, ini
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
                 />
-            </div>
-            
-            <div className="flex items-center gap-2 px-3 py-2 bg-white border border-base-200 rounded-xl shadow-sm hover:border-base-300 transition-all">
-                <Filter className="w-3.5 h-3.5 text-base-400" />
-                <select 
-                  className="bg-transparent border-none outline-none text-xs font-bold text-base-700 cursor-pointer"
-                  value={segment}
-                  onChange={(e) => setSegment(e.target.value)}
-                >
-                  <option value="all">All Segments</option>
-                  <option value="platinum">Platinum</option>
-                  <option value="gold">Gold</option>
-                  <option value="silver">Silver</option>
-                  <option value="at-risk">At-Risk</option>
-                </select>
             </div>
         </div>
       </div>
