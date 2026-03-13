@@ -647,6 +647,7 @@ const GlobalDashboard = ({ productFilter = 'all', dateRange = 7, startDate, endD
                     if (feedProductFilter !== 'all' && incident.product !== feedProductFilter) return false;
                     return true;
                   })
+                  .slice(0, 7)
                   .map((incident: any, idx: number) => {
                   const isSelected = selectedEvent &&
                     selectedEvent.timestamp === incident.timestamp &&
