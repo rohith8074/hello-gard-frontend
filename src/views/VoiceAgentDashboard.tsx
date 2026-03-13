@@ -660,11 +660,11 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
             {[
               { label: 'Neg → Pos', key: 'negative_to_positive', icon: <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />, color: 'bg-emerald-50 text-emerald-700 border-emerald-100' },
               { label: 'Stable Pos', key: 'stable_positive', icon: <Smile className="w-3.5 h-3.5 text-emerald-500" />, color: 'bg-emerald-50 text-emerald-600 border-emerald-100' },
-              { label: 'Stable Neu', key: 'stable_neutral', icon: <Clock className="w-3.5 h-3.5 text-slate-500" />, color: 'bg-slate-50 text-slate-600 border-slate-100' },
+              { label: 'Stable Neutral', key: 'stable_neutral', icon: <Clock className="w-3.5 h-3.5 text-slate-500" />, color: 'bg-slate-50 text-slate-600 border-slate-100' },
               { label: 'Pos → Neg', key: 'positive_to_negative', icon: <AlertTriangle className="w-3.5 h-3.5 text-rose-500" />, color: 'bg-rose-50 text-rose-700 border-rose-100' },
               { label: 'Degraded', key: 'degraded', icon: <Zap className="w-3.5 h-3.5 text-amber-500" />, color: 'bg-amber-50 text-amber-700 border-amber-100' },
-              { label: 'Stable', key: 'stable', icon: <Target className="w-3.5 h-3.5 text-blue-500" />, color: 'bg-blue-50 text-blue-700 border-blue-100' }
-            ].map((item, idx) => {
+              { label: 'Stable', key: 'stable', icon: <Target className="w-3.5 h-3.5 text-blue-500" />, color: 'bg-blue-50 text-blue-700 border-blue-100', tooltip: 'No Emotional Shift' }
+            ].map((item: any, idx) => {
               const count = (productFilter === 'all' && filteredCalls.length === 0)
                 ? [12, 35, 22, 3, 5, 8][idx]
                 : filteredCalls.filter((c: any) => c.sentiment?.shift === item.key).length;
@@ -672,13 +672,20 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
                 <div
                   key={idx}
                   onClick={() => setSelectedSentimentFilter({ type: 'shift', value: item.key, title: item.label + ' Calls', colorClass: item.color })}
-                  className={`p-3 rounded-xl border ${item.color} flex flex-col gap-2 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all`}
+                  className={`p-3 rounded-xl border ${item.color} flex flex-col gap-2 cursor-pointer hover:shadow-md hover:scale-[1.02] transition-all relative group`}
                 >
                   <div className="flex items-center justify-between">
                     {item.icon}
                     <span className="text-lg font-bold tabular-nums">{count}</span>
                   </div>
                   <span className="text-[11px] font-semibold">{item.label}</span>
+                  
+                  {item.tooltip && (
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-32 p-2 bg-gray-900 text-white text-[10px] leading-tight text-center rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-50 pointer-events-none shadow-xl border border-gray-700 font-normal">
+                      {item.tooltip}
+                      <div className="absolute top-full left-1/2 -ml-1 border-4 border-transparent border-t-gray-900"></div>
+                    </div>
+                  )}
                 </div>
               );
             })}
