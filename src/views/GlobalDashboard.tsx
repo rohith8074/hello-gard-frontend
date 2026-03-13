@@ -6,6 +6,7 @@ import { Activity, ShieldCheck, HeadphonesIcon, Cpu, AlertTriangle, RefreshCw, F
 import { motion, AnimatePresence } from 'framer-motion';
 import { format, subDays } from 'date-fns';
 import { refreshDashboard, getRefreshStatus, getFleetStatus, getEscalationTickets, getSalesLeads, getDashboardMetrics, getDashboardSummary, getActiveCalls, getSecurityEvents } from '@/lib/api';
+import { API_BASE_URL } from '@/lib/CONSTS';
 import CalendarRangePicker from '@/components/CalendarRangePicker';
 
 const toShortNum = (id: string) => {
@@ -139,8 +140,7 @@ const GlobalDashboard = ({ productFilter = 'all', dateRange = 7, startDate, endD
       return localEndDate >= today;
     };
 
-    const API_BASE = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-    const es = new EventSource(`${API_BASE}/dashboard/events/stream`);
+    const es = new EventSource(`${API_BASE_URL}/dashboard/events/stream`);
 
     es.onmessage = (e) => {
       if (!isTodayIncluded()) return; // Ignore live events if viewing past range

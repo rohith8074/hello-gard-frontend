@@ -12,6 +12,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { subDays, format } from 'date-fns';
 import { getDashboardSummary, refreshDashboard, getRecentCalls, getDashboardMetrics, getCallDetail, getEscalationTickets } from '@/lib/api';
+import { API_BASE_URL } from '@/lib/CONSTS';
 import CalendarRangePicker from '@/components/CalendarRangePicker';
 
 const PRODUCT_LABELS: Record<string, string> = {
@@ -229,8 +230,7 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
 
   const checkAudioAvailable = async (callId: string) => {
       try {
-          const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-          const res = await fetch(`${base}/dashboard/calls/${callId}/audio`, { method: 'HEAD' });
+          const res = await fetch(`${API_BASE_URL}/dashboard/calls/${callId}/audio`, { method: 'HEAD' });
           setAudioStatus(res.ok ? 'idle' : 'error');
       } catch {
           setAudioStatus('error');
@@ -241,8 +241,7 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
       // Use 'fetching' so the <audio> element does NOT mount while we wait for the POST
       setAudioStatus('fetching' as any);
       try {
-          const base = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1';
-          const res = await fetch(`${base}/dashboard/calls/${callId}/fetch-audio`, { method: 'POST' });
+          const res = await fetch(`${API_BASE_URL}/dashboard/calls/${callId}/fetch-audio`, { method: 'POST' });
           if (res.ok) {
               setAudioStatus('idle'); // now mount the player — audio is in DB
           } else {
@@ -916,7 +915,7 @@ export default function VoiceAgentDashboard({ productFilter, dateRange, startDat
                         <audio 
                           controls 
                           className="w-full h-10 outline-none rounded-xl"
-                          src={`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/v1'}/dashboard/calls/${selectedCall.call_id || selectedCall.session_id}/audio`} 
+                          src={`${API_BASE_URL}/dashboard/calls/${selectedCall.call_id || selectedCall.session_id}/audio`} 
                           onLoadStart={() => {
                             setAudioStatus('loading');
                           }}
