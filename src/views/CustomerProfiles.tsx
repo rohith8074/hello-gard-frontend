@@ -314,11 +314,10 @@ export default function CustomerProfiles({ productFilter = 'all', changeTab, ini
                     </div>
 
                     {/* Quick Stats Grid */}
-                    <div className="grid grid-cols-5 gap-3 mt-8">
+                    <div className="grid grid-cols-4 gap-3 mt-8">
                         {[
                             { label: 'Total Calls', val: userDetail.metrics.total_calls, icon: Phone, color: 'text-primary-600', bg: 'bg-primary-50' },
                             { label: 'Avg CSAT', val: `${userDetail.metrics.avg_csat}/5`, icon: Star, color: 'text-emerald-600', bg: 'bg-emerald-50' },
-                            { label: 'Knowledge Trust', val: `${Math.round(userDetail.metrics.avg_rag * 100)}%`, icon: Cpu, color: 'text-indigo-600', bg: 'bg-indigo-50' },
                             { label: 'Open Tickets', val: userDetail.metrics.open_tickets, icon: AlertCircle, color: 'text-red-600', bg: 'bg-red-50' },
                             { label: 'Sales Value', val: `$${userDetail.metrics.pipeline_value.toLocaleString()}`, icon: DollarSign, color: 'text-indigo-600', bg: 'bg-indigo-50' },
                         ].map((stat, i) => (
